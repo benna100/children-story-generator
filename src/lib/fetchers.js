@@ -4,16 +4,25 @@ export async function openai_prompt({prompt,fake}) {
     return "Ingeborg møder en delfin der kan spille guitar. Delfinen spiller en melodi, og Ingeborg synes, at det er den smukkeste musik, hun nogensinde har hørt. Hun spørger delfinen, om den kan lære hende at spille guitar. Delfinen svarer, at det kan den godt. Så Ingeborg og delfinen begynder at spille guitar sammen. Og Ingeborg synes, at det er så sjovt, at hun aldrig vil stoppe igen."
   }
 
-    const openaiKey = !! sessionStorage.getItem("OPENAI_KEY")
-      ? sessionStorage.getItem("OPENAI_KEY")
-      : window.prompt("Enter your OpenAI api key");
-
-  sessionStorage.setItem("OPENAI_KEY", openaiKey);
+  let openAiSessionStorage = sessionStorage.getItem("OPENAI_KEY")
+  const doesSessionStorageExist = openAiSessionStorage && openAiSessionStorage !== "null" && openAiSessionStorage !== ""
+  if(!doesSessionStorageExist) {
+    const keyFromPrompt = window.prompt("Enter your OpenAI api key");
+    if(keyFromPrompt) {
+      sessionStorage.setItem("OPENAI_KEY", keyFromPrompt);
+      openAiSessionStorage = keyFromPrompt;
+    } else {
+      alert('Please input a prompt');
+      
+      window.location.reload();
+      
+    }
+  }
 
   const res = await fetch("https://api.openai.com/v1/completions", {
     headers: {
       "content-type": "application/json",
-      Authorization: `Bearer ${openaiKey}`,
+      Authorization: `Bearer ${openAiSessionStorage}`,
     },
     method: "post",
     body: JSON.stringify({
@@ -36,12 +45,28 @@ export async function diffusion_prompt({prompt,prefix="",suffix="",fake}) {
         return rese("https://daisyui.com/tailwind-css-component-card-1.jpg")
       }
 
+console.log(sessionStorage.getItem("STADIFF_KEY"));
+      
 
-  const stadiff =
-    (sessionStorage.getItem("STADIFF_KEY") && sessionStorage.getItem("STADIFF_KEY") !== "null" && sessionStorage.getItem("STADIFF_KEY") !== "true") ||
-    window.prompt("Enter your Stable Diffusion api key");
+  // const stadiff =
+  //   (sessionStorage.getItem("STADIFF_KEY") && sessionStorage.getItem("STADIFF_KEY") !== "null" && sessionStorage.getItem("STADIFF_KEY") !== "true") ||
+  //   window.prompt("Enter your Stable Diffusion api key");
   
-  sessionStorage.setItem("STADIFF_KEY", stadiff);
+  //   if()
+  // sessionStorage.setItem("STADIFF_KEY", stadiff);
+
+  let stableDiffusionSessionStorage = sessionStorage.getItem("STADIFF_KEY")
+  const doesSessionStorageExist = stableDiffusionSessionStorage && stableDiffusionSessionStorage !== "null" && stableDiffusionSessionStorage !== ""
+  if(!doesSessionStorageExist) {
+    const keyFromPrompt = window.prompt("Enter your stable diffusion api key");
+    if(keyFromPrompt) {
+      sessionStorage.setItem("STADIFF_KEY", keyFromPrompt);
+      stableDiffusionSessionStorage = keyFromPrompt;
+    } else {
+      alert('Please input a prompt');
+      window.location.reload();
+    }
+  }
 
 //   const prefixed_prompt = `An image from a childrens book of ${prompt} in the style of Sir John Tenniel `;
 // const final_prompt = [prefix,prompt,suffix].join(" ")
@@ -60,7 +85,7 @@ export async function diffusion_prompt({prompt,prefix="",suffix="",fake}) {
     method: "POST",
     headers: {
       "content-type": "application/x-www-form-urlencoded",
-      "X-RapidAPI-Key": stadiff,
+      "X-RapidAPI-Key": stableDiffusionSessionStorage,
       "X-RapidAPI-Host": "dezgo.p.rapidapi.com",
     },
     body: encodedParams,
