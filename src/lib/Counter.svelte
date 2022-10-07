@@ -2,7 +2,7 @@
 
   import {openai_prompt, diffusion_prompt} from "./fetchers"
 
-  const FAKE_IT = false
+  const FAKE_IT = true
 
   // let prompt = ""
   // const update_prompt = (e) => {
@@ -67,17 +67,17 @@
 
 <h1 class="text-4xl pt-10 pb-10 text-center p-2">Generer din egen børnebog 📖</h1>
 
-<div class="p-6 text-2xl w-1/2" style="margin: 0 auto;">
+<div class="p-6 text-2xl w-full" style="margin: 0 auto; max-width: 600px;">
 
   <p class="">Generer en historie om</p>
-  <input bind:value={childName} class="h-8 input text-secondary-content mb-6 font-bold  bg-secondary" type="text" placeholder="fx. en pige der hedder..." /> 
+  <input bind:value={childName} class="h-8 input text-secondary-content mb-6 font-bold bg-secondary w-full" type="text" placeholder="fx. en pige der hedder..." /> 
 
   <p>Barnets alder er</p>
-  <input class="input w-24 font-bold text-secondary-content font-bold mb-6 bg-secondary" bind:value={childAge}  type="text" placeholder="fx. 5" />
+  <input class="input font-bold text-secondary-content font-bold mb-6 bg-secondary w-full" bind:value={childAge}  type="text" placeholder="fx. 5" />
 
     <p>Den skal handle om </p>
     
-    <textarea class="textarea block bg-secondary h-36 mb-10" bind:value={storyDescription} name="" id="" cols="30" rows="10" placeholder="fx. møder en drage med en sjov hat på"></textarea>
+    <textarea class="textarea block bg-secondary h-36 mb-10 w-full" bind:value={storyDescription} name="" id="" cols="30" rows="10" placeholder="fx. møder en drage med en sjov hat på"></textarea>
 
   {#if ! loading_story}
 
@@ -104,8 +104,8 @@
 
 {#if render_resultImage}
 <div class="divider mb-10">Din historie:</div>
-<div class="pb-8 w-1/2" style="margin: 0 auto; overflow:auto; min-height:400px;">
-  <img src="{render_resultImage}" width="300" height="300" class="float-right ml-2" />
+<div class="pb-8" style="margin: 0 auto; overflow:auto; min-height:400px; max-width: 600px;">
+  <img src="{render_resultImage}" width="300" height="300" class="float-right ml-2 mr-4" />
   <p class="text-3xl p-2" style="line-height: 2.5rem; font-size:1.6rem; white-space: break-spaces;">{render_resultStory}</p>
 </div>
 
