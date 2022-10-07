@@ -36,8 +36,9 @@ export async function diffusion_prompt({prompt,prefix="",suffix="",fake}) {
         return rese("https://daisyui.com/tailwind-css-component-card-1.jpg")
       }
 
+
   const stadiff =
-    (sessionStorage.getItem("STADIFF_KEY") && sessionStorage.getItem("STADIFF_KEY") !== "") ||
+    (sessionStorage.getItem("STADIFF_KEY") && sessionStorage.getItem("STADIFF_KEY") !== "null" && sessionStorage.getItem("STADIFF_KEY") !== "true") ||
     window.prompt("Enter your Stable Diffusion api key");
   
   sessionStorage.setItem("STADIFF_KEY", stadiff);
