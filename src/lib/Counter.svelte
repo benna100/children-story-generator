@@ -11,9 +11,9 @@
   // }
 
   /** User inputs*/
-  let childName = "Ingeborg";
-  let childAge = 4;
-  let storyDescription = "møder en delfin der kan spille guitar";
+  let childName = FAKE_IT ? "Ingeborg" : "";
+  let childAge = FAKE_IT ? 4 : "";
+  let storyDescription = FAKE_IT ? "møder en delfin der kan spille guitar": "";
   
   let loading_story = false
 
@@ -70,7 +70,7 @@
 <div class="p-6 text-2xl w-full" style="margin: 0 auto; max-width: 800px;">
 
   <p class="">Generer en historie om</p>
-  <input bind:value={childName} class="h-8 input text-secondary-content mb-6 font-bold bg-secondary w-full" type="text" placeholder="fx. en pige der hedder..." /> 
+  <input bind:value={childName} class="h-8 input text-secondary-content mb-6 font-bold bg-secondary w-full" type="text" placeholder="fx. Valdemar" /> 
 
   <p>Barnets alder er</p>
   <input class="input font-bold text-secondary-content font-bold mb-6 bg-secondary w-full" bind:value={childAge}  type="text" placeholder="fx. 5" />
