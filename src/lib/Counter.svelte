@@ -67,7 +67,7 @@
 
 <h1 class="text-4xl pt-10 pb-10 text-center p-2">Generer din egen børnebog 📖</h1>
 
-<div class="p-6 text-2xl w-full" style="margin: 0 auto; max-width: 600px;">
+<div class="p-6 text-2xl w-full" style="margin: 0 auto; max-width: 800px;">
 
   <p class="">Generer en historie om</p>
   <input bind:value={childName} class="h-8 input text-secondary-content mb-6 font-bold bg-secondary w-full" type="text" placeholder="fx. en pige der hedder..." /> 
@@ -104,8 +104,8 @@
 
 {#if render_resultImage}
 <div class="divider mb-10">Din historie:</div>
-<div class="pb-8" style="margin: 0 auto; overflow:auto; min-height:400px; max-width: 600px;">
-  <img src="{render_resultImage}" width="300" height="300" class="float-right ml-2 mr-4" />
+<div class="p-8" style="margin: 0 auto; overflow:auto; min-height:400px; max-width: 800px;">
+  <img src="{render_resultImage}" class=" w-full sm:w-1/2 ml-2 mr-4 sm:float-right" />
   <p class="text-3xl p-2" style="line-height: 2.5rem; font-size:1.6rem; white-space: break-spaces;">{render_resultStory}</p>
 </div>
 

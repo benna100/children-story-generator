@@ -37,8 +37,9 @@ export async function diffusion_prompt({prompt,prefix="",suffix="",fake}) {
       }
 
   const stadiff =
-    sessionStorage.getItem("STADIFF_KEY") ||
+    (sessionStorage.getItem("STADIFF_KEY") && sessionStorage.getItem("STADIFF_KEY") !== "") ||
     window.prompt("Enter your Stable Diffusion api key");
+  
   sessionStorage.setItem("STADIFF_KEY", stadiff);
 
 //   const prefixed_prompt = `An image from a childrens book of ${prompt} in the style of Sir John Tenniel `;
