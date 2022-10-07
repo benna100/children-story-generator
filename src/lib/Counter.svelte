@@ -2,7 +2,7 @@
 
   import {openai_prompt, diffusion_prompt} from "./fetchers"
 
-  const FAKE_IT = true
+  const FAKE_IT = false
 
   // let prompt = ""
   // const update_prompt = (e) => {
