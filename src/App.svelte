@@ -5,7 +5,7 @@
 
 </script>
 
-<main style="min-height:100vh;">
+<main class="bg-primary" style="min-height:100vh;">
 
   <Counter />
 

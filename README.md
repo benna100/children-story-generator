@@ -27,11 +27,11 @@ For at bruge denne applikation skal du oprette to kodeord.
 1. Det ene kodeord bruger vi til at generere teksten på børnebogen
 2. Det andet kodeord bruger vi til at generere billeder til teksten
 
-### OpenAI kodeord
+### OpenAI api nøgle
 
-For at få OpenAI kodeordet skal du oprette en bruger her: [https://openai.com/api/](https://openai.com/api/). Når den er oprettet skal du gå ind på [denne side](https://beta.openai.com/account/api-keys) og vælge `Create new secret key`. Det er kodeordet til OpenAI. Hold kodeordet hemmeligt!
+For at få OpenAI api nøglen skal du oprette en bruger her: [https://openai.com/api/](https://openai.com/api/). Når den er oprettet skal du gå ind på [denne side](https://beta.openai.com/account/api-keys) og vælge `Create new secret key`. Det er api nøglen til OpenAI. Hold api nøglen hemmeligt!
 
-### Stable Diffusion kodeord
-For at få kodeordet til at oprette billeder skal du oprette en ny bruger [her](https://rapidapi.com/dezgo/api/dezgo). Derefter skal man subscribe til [api'et](https://rapidapi.com/dezgo/api/dezgo). 
+### Stable Diffusion api nøgle
+For at få api nøglen til at oprette billeder skal du oprette en ny bruger [her](https://rapidapi.com/dezgo/api/dezgo). Derefter skal man subscribe til [api'et](https://rapidapi.com/dezgo/api/dezgo). 
 
-Når man har subscribed skal [man gå oversigten](https://rapidapi.com/developer/apps) over ens apps. Klikke på `Security` og hvor der står `Key` det er ens kode ord. Puha for en omgang
+Når man har subscribed skal [man gå oversigten](https://rapidapi.com/developer/apps) over ens apps. Klikke på `Security` og hvor der står `Key` det er ens api nøgle. Puha for en omgang
