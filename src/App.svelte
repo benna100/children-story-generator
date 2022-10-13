@@ -5,7 +5,7 @@
 
 </script>
 
-<main data-theme="retro" style="min-height:100vh;">
+<main style="min-height:100vh;">
 
   <Counter />
 
