@@ -21,7 +21,6 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   $: childName = FAKE_IT ? "Ingeborg" : childNameLocalStorage;
   $: childAge = FAKE_IT ? 4 : childAgeLocalStorage;
   $: storyDescription = FAKE_IT ? "møder en delfin der kan spille guitar": "";
-
   
   let openAiKey = hasLocalStorage('OPENAI_KEY') ? localStorage.getItem('OPENAI_KEY') : '';
   let stableDiffusionKey = hasLocalStorage('STADIFF_KEY') ? localStorage.getItem('STADIFF_KEY') : '';
@@ -36,6 +35,10 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   // let render_resultStory = FAKE_LOADED_STORY ? `Her er en historie` : "";
   
   const generateStory = async () => {
+
+    localStorage.setItem('CHILD_NAME', childName);
+    localStorage.setItem('CHILD_AGE', childAge);
+
     if(openAiKey) {
       localStorage.setItem('OPENAI_KEY', openAiKey);
     }
@@ -79,7 +82,7 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
 
     console.log("Summary: ", englishSummary);
 
-    const imagePromptText = `${englishSummary} Children's Book Illustration, taylor barron, basia tran`.replace(childName, 'a child');
+    const imagePromptText = `${englishSummary} Children's Book Illustration, taylor barron, basia tran`.replace(childName, ' a child');
 
     console.log(imagePromptText);
 
@@ -105,6 +108,12 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   const showGenerateStoryButton = () => {
     console.log(1);
     isVisibleIntroGenerateButton = true;
+    // if (window.FAKE_DAT_IMAGE) {
+    //   document.getElementById("chap-0").remove()
+    // }
+
+    // $: chapters = [];
+
   }
 
   const introEnd = () => {
@@ -112,6 +121,7 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
       document.querySelector('h1').scrollIntoView({behavior:"smooth",block:"start"});
     }, 100);
 
+    $: chapters = [];
     $: childName = "";
     $: childAge =  "";
     $: storyDescription = "";
@@ -153,7 +163,7 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
       alert(err)
     });
 
-    const imagePromptText = `${englishSummary} Children's Book Illustration, taylor barron, basia tran`.replace(childName, 'a child');
+    const imagePromptText = `${englishSummary} Children's Book Illustration, taylor barron, basia tran`.replace(childName, ' a child');
 
     diffusion_prompt({
       prompt: imagePromptText,
@@ -228,7 +238,7 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   <!-- <div class="animate-spin"></div> -->
  
 </div>
-
+<div id="generated-story">
 <!-- {#if render_resultImage} -->
 {#if chapters.length > 0}
 <div class="divider mb-10">Din historie:</div>
@@ -261,7 +271,7 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   
 
 
-<div class="text-center p-8">
+<div class="text-center p-8" id="continue-history">
   <button class="btn btn-primary w-60 self-center" on:click={continueStory}><span class="pointer-events-none">Fortsæt historien</span><div style="display:none;" class="flex"> <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -272,5 +282,5 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
 			{cat.name}
 		</a></li> -->
 	{/each}
-
+</div>
 <!-- {/if} -->

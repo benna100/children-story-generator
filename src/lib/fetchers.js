@@ -24,16 +24,24 @@ export async function openai_prompt({prompt,fake, openAiKey}) {
   if (json && Array.isArray(json.choices)) {
     return json.choices[0].text && json.choices[0].text.trim();
   }
-  return fake
+  return `Ingeborg møder en delfin der kan spille guitar. Delfinen spiller en melodi, og Ingeborg synes, at det er den smukkeste musik, hun nogensinde har hørt. 
+  Hun spørger delfinen, om den kan lære hende at spille guitar. 
+  Delfinen svarer, at det kan den godt. Så Ingeborg og delfinen begynder at spille guitar sammen. Og Ingeborg synes, at det er så sjovt, at hun aldrig vil stoppe igen.`
 };
 
 export async function diffusion_prompt({prompt,prefix="",suffix="",fake, stableDiffusionKey}) {
   return new Promise((rese,reje) => {
-
+console.log("1");
     if (fake) {
       return setTimeout(() => {
+        console.log("2");
         rese("https://cdn.dribbble.com/users/965441/screenshots/16233874/media/ac1494cf02cfce24c2e864bce1c2136a.jpg?compress=1&resize=1600x1200&vertical=top")
       }, 3000)
+    }
+    
+    if (window.FAKE_DAT_IMAGE) {
+      console.log("faky");
+      rese("https://cdn.dribbble.com/users/965441/screenshots/16233874/media/ac1494cf02cfce24c2e864bce1c2136a.jpg?compress=1&resize=1600x1200&vertical=top")
     }
 
     const encodedParams = new URLSearchParams();
@@ -65,7 +73,9 @@ export async function diffusion_prompt({prompt,prefix="",suffix="",fake, stableD
       //   document.body.insertAdjacentElement("beforebegin", img);
       })
       .catch((err) => {
-          console.error(err);  reje(err)
+          console.error(err);
+          
+          reje(err)
       });
   })
 };

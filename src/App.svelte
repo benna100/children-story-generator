@@ -7,10 +7,11 @@
 </script>
 
 <main class="bg-primary" style="min-height:100vh;" id="main">
-  <!-- {#if !hasLocalStorage('SPLASH_DISPLAYED')} -->
+  {#if !hasLocalStorage('SPLASH_DISPLAYED')}
   <Intro />
-  <!-- {/if} -->
-  <div id="story-inputter" class="mb-24" style="opacity:0.2;">
+  {/if}
+  
+  <div id="story-inputter" class="mb-24" style="opacity:{!hasLocalStorage('SPLASH_DISPLAYED') ? 0.2 : 1};">
     <Counter />
   </div>
   

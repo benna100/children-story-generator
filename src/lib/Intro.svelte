@@ -15,41 +15,23 @@
         }, speed);
       }
 
-      function reveal_the_story({
-            name,
-            age,
-            description
-        }) {
-          const intro_container = document.getElementById("main")
-          intro_container && intro_container.insertAdjacentHTML("afterend",`<div class="bg-base-100" style="margin: 0 auto; overflow:auto; min-height:400px; max-width: 800px; border-radius: 8px;" id="chap-1">
-    <div class="p-10">
-    <h2 class="font-bold text-2xl opacity-60">1.</h2>
-    <p class="pt-4" style="line-height: 2.5rem; font-size:1.5rem; white-space: break-spaces;">${description}</p>
-  </div>
-  <img src="https://cdn.iconfinder.com/data/family/previews/preview-2x/tuesday.png?1665403976" class="object-cover" style="width: calc(100% - 12px); border-radius: 8px; margin: 0 auto;" />
-   
-</div>`)
-document.getElementById("chap-1").scrollIntoView({behavior:"smooth",block:"start"})
-
-window.showGenerateStoryButton();
-
-      }
+      window.FAKE_DAT_IMAGE = true;
      
     async function intro_typing() {
-        const form = document.getElementById("story-generator");
+        // const form = document.getElementById("story-generator");
         const childNameInput = document.querySelector('input[name=child-name]');
         const ageInput = document.querySelector('input[name=age]')
         const descriptionInput = document.querySelector('textarea[name=story-description]');
-        const openAiInput = document.querySelector('textarea[name=openai-key]');
-        const stableDiffusionInput = document.querySelector('textarea[name=stable-diffusion-key]');
-        console.log(childNameInput)
+        const openAiInput = document.querySelector('input[name=openai-key]');
+        const stableDiffusionInput = document.querySelector('input[name=stable-diffusion-key]');
+        
         const typingSpeed = 150;
         let name = "Ingeborgz";
         childNameInput.value = name
         typingEffect(childNameInput,typingSpeed)
 
         await wait(typingSpeed * name.length)
- 
+
         let age = 4;
         ageInput.value = age
         typingEffect(ageInput,typingSpeed)
@@ -62,16 +44,42 @@ window.showGenerateStoryButton();
 
         await wait(typingSpeed * description.length)
 
+
+        // console.log("ja tak ",openAiInput)
+        // let oak = "1234567890megetlangapitoken";
+        // openAiInput.value = oak
+        // typingEffect(openAiInput,typingSpeed)
+
+        // await wait(typingSpeed * oak.length)
+
+        // let sdf = "1234567890megetlangapitoken";
+        // stableDiffusionInput.value = sdf
+        // typingEffect(stableDiffusionInput,typingSpeed)
+
+        // await wait(typingSpeed * sdf.length)
+
         document.getElementById("button-go").click()
         
-        await wait(500)
+        await wait(1000)
 
-        reveal_the_story({
-            name,
-            age,
-            description
-        })
+        document.getElementById("continue-history").style.display = "none"
 
+        await wait(10);
+
+        window.showGenerateStoryButton();
+
+
+        setTimeout(() => {
+          window.FAKE_DAT_IMAGE = false 
+        }, 3000);
+        
+
+        // reveal_the_story({
+        //     name,
+        //     age,
+        //     description
+        // })
+            
         localStorage.setItem('SPLASH_DISPLAYED', "true");        
     }
 
