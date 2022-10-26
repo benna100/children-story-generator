@@ -38,7 +38,7 @@
 
         await wait(225)
         
-        let description = `Strisserne kom! bang`;
+        let description = `Ingeborg møder en delfin der kan spille guitar...`;
         descriptionInput.value = description
         typingEffect(descriptionInput,typingSpeed)
 
