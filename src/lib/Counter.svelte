@@ -2,7 +2,7 @@
 
   import Chapter from "./Chapter.svelte";
 import {openai_prompt, diffusion_prompt} from "./fetchers"
-  import {hasSessionStorage} from './sessionStorage.js';
+  import {hasLocalStorage} from './localStorage.js';
 	import { afterUpdate, tick } from 'svelte';
 
   const FAKE_IT = false
@@ -14,12 +14,17 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   //   console.log("prompt is",prompt)
   // }
   /** User inputs*/
-  $: childName = FAKE_IT ? "Ingeborg" : "";
-  $: childAge = FAKE_IT ? 4 : "";
-  $: storyDescription = FAKE_IT ? "møder en delfin der kan spille guitar": "";
   
-  let openAiKey = hasSessionStorage('OPENAI_KEY') ? sessionStorage.getItem('OPENAI_KEY') : '';
-  let stableDiffusionKey = hasSessionStorage('STADIFF_KEY') ? sessionStorage.getItem('STADIFF_KEY') : '';
+  let childNameLocalStorage = hasLocalStorage('CHILD_NAME') ? localStorage.getItem('CHILD_NAME') : '';
+  let childAgeLocalStorage = hasLocalStorage('CHILD_AGE') ? localStorage.getItem('CHILD_AGE') : '';
+
+  $: childName = FAKE_IT ? "Ingeborg" : childNameLocalStorage;
+  $: childAge = FAKE_IT ? 4 : childAgeLocalStorage;
+  $: storyDescription = FAKE_IT ? "møder en delfin der kan spille guitar": "";
+
+  
+  let openAiKey = hasLocalStorage('OPENAI_KEY') ? localStorage.getItem('OPENAI_KEY') : '';
+  let stableDiffusionKey = hasLocalStorage('STADIFF_KEY') ? localStorage.getItem('STADIFF_KEY') : '';
 
   $: prompt = `Det følgende er en historie til en ${childAge} årig barn, barnet hedder ${childName}. ${storyDescription}. \n`;
 
@@ -32,11 +37,11 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   
   const generateStory = async () => {
     if(openAiKey) {
-      sessionStorage.setItem('OPENAI_KEY', openAiKey);
+      localStorage.setItem('OPENAI_KEY', openAiKey);
     }
 
     if(stableDiffusionKey) {
-      sessionStorage.setItem('STADIFF_KEY', stableDiffusionKey);
+      localStorage.setItem('STADIFF_KEY', stableDiffusionKey);
     }
 
     loading_story = true
@@ -95,6 +100,28 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
       alert(err)
     });
   }
+
+  let isVisibleIntroGenerateButton = false;
+  const showGenerateStoryButton = () => {
+    console.log(1);
+    isVisibleIntroGenerateButton = true;
+  }
+
+  const introEnd = () => {
+    setTimeout(() => {
+      document.querySelector('h1').scrollIntoView({behavior:"smooth",block:"start"});
+    }, 100);
+
+    $: childName = "";
+    $: childAge =  "";
+    $: storyDescription = "";
+
+    setTimeout(() => {
+      isVisibleIntroGenerateButton = false;
+    }, 300);
+  }
+
+  window.showGenerateStoryButton = showGenerateStoryButton;
   
   const continueStory = async (e) => {
     const button = e.target;
@@ -148,33 +175,40 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
 
 <h1 class="text-4xl pt-10 pb-10 text-center p-2">Generer din egen børnebog 📖</h1>
 
-<div class="p-6 text-2xl w-full flex flex-col justify-items-center" style="margin: 0 auto; max-width: 800px;">
+<div class="p-6 text-2xl w-full flex flex-col justify-items-center" id="story-generator" style="margin: 0 auto; max-width: 800px;">
  <div class="flex">
   <div class="flex w-full">
     <div class="grow mr-3"> 
       <p class="">Barnets navn</p>
-      <input bind:value={childName} class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800 placeholder-black::placeholder  placeholder:text-blue-800" type="text" placeholder="fx. Valdemar" /> 
+      <input bind:value={childName} class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800 placeholder-black::placeholder  placeholder:text-blue-800" type="text" name="child-name" placeholder="fx. Valdemar" /> 
     </div>
     <div class="grow">
       <p>Barnets alder</p>
-      <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={childAge}  type="text" placeholder="fx. 5" />
+      <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={childAge} name="age" type="text" placeholder="fx. 5" />
     </div>
   </div>
  </div>
     <p>Hvad skal historien handle om?</p>
-    <textarea class="textarea block bg-secondary h-10 mb-10 w-full placeholder:text-blue-800" bind:value={storyDescription} name="" id="" placeholder="fx. Historien skal handle om en drage med hat på"></textarea>
+    <textarea name="story-description" class="textarea block bg-secondary h-10 mb-10 w-full placeholder:text-blue-800" bind:value={storyDescription} id="" placeholder="fx. Historien skal handle om en drage med hat på"></textarea>
 
     <p>OpenAI kodeord api nøgle. <a class="underline" href="https://github.com/benna100/children-story-generator#f%C3%B8r-du-starter">Guide her</a></p>
-    <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={openAiKey}  type="password" placeholder="" />
+    <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={openAiKey}  type="password" placeholder="" name="openai-key" />
 
     <p>Stable Diffusion api nøgle. <a class="underline" href="https://github.com/benna100/children-story-generator#f%C3%B8r-du-starter">Guide her</a></p>
-    <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={stableDiffusionKey}  type="password" placeholder="" />
+    <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={stableDiffusionKey}  type="password" placeholder="" name="stable-diffusion-key" />
     <!--
     <p>Vi lover ikke at stjæle dine api nøgler 🤞 <br> Du kan selv tjekke koderne <a class="underline" href="https://github.com/benna100/children-story-generator/blob/a13ec322119a5c625af1758658f9ace612c1d134/assets/index.7e304e36.js#L1">her</a> (men de er lidt svære)</p><br>
 -->
+
+{#if isVisibleIntroGenerateButton}
+<button class="btn btn-primary mt-6 bottom-3 w-60 self-center fixed" on:click={introEnd}>
+  Generer din egen historie
+</button>
+{/if}
+
   {#if ! loading_story}
 
-  <button class="btn btn-primary mt-6 w-60 self-center" on:click={generateStory}>
+  <button id="button-go" class="btn btn-primary mt-6 w-60 self-center" on:click={generateStory}>
     Generer din historie
   </button>
   

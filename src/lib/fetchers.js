@@ -21,7 +21,10 @@ export async function openai_prompt({prompt,fake, openAiKey}) {
   const json = await res.json();
   console.log(json)
   // what does it return?
-  return json.choices[0].text && json.choices[0].text.trim();
+  if (json && Array.isArray(json.choices)) {
+    return json.choices[0].text && json.choices[0].text.trim();
+  }
+  return fake
 };
 
 export async function diffusion_prompt({prompt,prefix="",suffix="",fake, stableDiffusionKey}) {
