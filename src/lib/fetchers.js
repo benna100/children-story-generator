@@ -40,8 +40,7 @@ console.log("1");
     }
     
     if (window.FAKE_DAT_IMAGE) {
-      console.log("faky");
-      rese("https://cdn.dribbble.com/users/965441/screenshots/16233874/media/ac1494cf02cfce24c2e864bce1c2136a.jpg?compress=1&resize=1600x1200&vertical=top")
+      rese("https://media.discordapp.net/attachments/903695121810346076/1034949174497648672/DALLE_2022-10-26_23.58.15_-_An_illustration_of_a_child_that_meets_a_dolphin_that_can_play_guitar_Childrens_Book_Illustration_taylor_barron_basia_tran.png")
     }
 
     const encodedParams = new URLSearchParams();

@@ -26,7 +26,7 @@
         const stableDiffusionInput = document.querySelector('input[name=stable-diffusion-key]');
         
         const typingSpeed = 150;
-        let name = "Ingeborgz";
+        let name = "Ingeborg";
         childNameInput.value = name
         typingEffect(childNameInput,typingSpeed)
 
