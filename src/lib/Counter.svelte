@@ -291,7 +291,7 @@
 {:else}
 <div class="flex justify-center">
   <!-- <button class="btn btn-primary w-60 self-center mr-4" on:click={download_pdf}><span class="pointer-events-none">Download historien (PDF)</span></button> -->
-  <button class="btn btn-primary w-60 self-center" ><span class="pointer-events-none">Lav en ny historie</span></button>
+  <button class="btn btn-primary w-60 self-center mt-12" ><span class="pointer-events-none">Lav en ny historie</span></button>
   </div>
 {/if}
 	{/each}
