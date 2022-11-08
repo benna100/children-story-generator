@@ -70,7 +70,7 @@
 
 
 Ingeborg er meget glad for at have mødt den søde delfin, og de to bliver hurtigt venner. Delfinen lærer Ingeborg at spille guitar, og Ingeborg lærer delfinen nogle tricks til at spille bedre. 
-De to bliver snart rigtig gode venner, og de spiller ofte guitar sammen. De har det så sjovt, at de aldrig vil skilles igen.</p></div> <img src="https://media.discordapp.net/attachments/903695121810346076/1034949174497648672/DALLE_2022-10-26_23.58.15_-_An_illustration_of_a_child_that_meets_a_dolphin_that_can_play_guitar_Childrens_Book_Illustration_taylor_barron_basia_tran.png" class="object-cover" style="width: calc(100% - 12px); border-radius: 8px; margin: 0px auto;"></div><div class="flex justify-center"><a class="btn btn-primary mt-6 w-60 self-center" href="/">Generer din historie</a></div>`
+De to bliver snart rigtig gode venner, og de spiller ofte guitar sammen. De har det så sjovt, at de aldrig vil skilles igen.</p></div> <img src="https://media.discordapp.net/attachments/903695121810346076/1034949174497648672/DALLE_2022-10-26_23.58.15_-_An_illustration_of_a_child_that_meets_a_dolphin_that_can_play_guitar_Childrens_Book_Illustration_taylor_barron_basia_tran.png" class="object-cover" style="width: calc(100% - 12px); border-radius: 8px; margin: 0px auto;"></div><div class="flex justify-center"><a class="btn btn-primary mt-6 w-60 self-center" href="https://benna100.github.io/children-story-generator/">Generer din historie</a></div>`
 
 document.getElementById("generated-story").innerHTML =  FAKE_STORY
 document.getElementById("generated-story").scrollIntoView({behavior:"smooth"})
