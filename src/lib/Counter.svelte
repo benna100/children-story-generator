@@ -1,9 +1,10 @@
 <script>
-
-  import Chapter from "./Chapter.svelte";
-import {openai_prompt, diffusion_prompt} from "./fetchers"
+// Historien skal handle om en ingeborg der lærer at flyve
+  // import Chapter from "./Chapter.svelte";
+  import {openai_prompt, diffusion_prompt} from "./fetchers"
   import {hasLocalStorage} from './localStorage.js';
-	import { afterUpdate, tick } from 'svelte';
+  import {savePdf} from "./pdf.js"
+	// import { afterUpdate, tick } from 'svelte';
 
   const FAKE_IT = false
   const FAKE_LOADED_STORY = false
@@ -14,6 +15,7 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   //   console.log("prompt is",prompt)
   // }
   /** User inputs*/
+
   
   let childNameLocalStorage = hasLocalStorage('CHILD_NAME') ? localStorage.getItem('CHILD_NAME') : '';
   let childAgeLocalStorage = hasLocalStorage('CHILD_AGE') ? localStorage.getItem('CHILD_AGE') : '';
@@ -25,7 +27,7 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   let openAiKey = hasLocalStorage('OPENAI_KEY') ? localStorage.getItem('OPENAI_KEY') : '';
   let stableDiffusionKey = hasLocalStorage('STADIFF_KEY') ? localStorage.getItem('STADIFF_KEY') : '';
 
-  $: prompt = `Det følgende er en historie til en ${childAge} årig barn, barnet hedder ${childName}. ${storyDescription}. \n`;
+  $: prompt = `Det følgende er en positiv, sjov, sød, nuttet historie til et ${childAge} årigt barn, barnet hedder ${childName}. ${storyDescription}. \n`;
 
   $: chapters = [];
   
@@ -82,16 +84,15 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
 
     console.log("Summary: ", englishSummary);
 
-    const imagePromptText = `${englishSummary} Children's Book Illustration, taylor barron, basia tran`.replace(childName, ' a child');
+    const imagePromptText = `a cute adorable kids book watercolor illustration of ${englishSummary}. Quentin blake, Lulu Chen, Maurice sendak, Highly Detailed, Le petit prince, The little prince`.replace(childName, ' a child');
 
     console.log(imagePromptText);
 
     console.log("Image prompt: ", imagePromptText);
-    console.log(stableDiffusionKey,openAiKey)
     diffusion_prompt({
       prompt: imagePromptText,
       fake: FAKE_IT,
-      stableDiffusionKey
+      openAiKey
     }).then((url) => {
       /* output */
       // render_resultImage = url;
@@ -102,6 +103,10 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
     }).catch((err) => {
       alert(err)
     });
+  }
+
+  function download_pdf() {
+    savePdf(chapters);
   }
 
   let isVisibleIntroGenerateButton = false;
@@ -138,23 +143,27 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
     
     e.target.children[0].style.display = "none"
     e.target.children[1].style.display = "";
+    
     console.log("previous:",chapters[chapters.length - 1])
     console.log("next prompt",[prompt, ...chapters.map((s) => s.story)].join(" "))
+    // return console.log(prompt,chapters,[prompt, ...chapters.map((s) => s.story)].join(" "))
     const continuingStory = await openai_prompt({
-      prompt:[prompt, ...chapters.map((s) => s.story)].join(" "),
+      prompt:[prompt, ...chapters.map((s) => s.story)].join(" ") + ' ',
       fake:FAKE_IT,
       openAiKey
     }).catch((err) => {
       alert(err)
     });
-
-    chapters.push({story:continuingStory})
+  console.log('continuingStory', continuingStory);
+    chapters.push({story:continuingStory});
+    console.log('chapters', chapters);
     chapters = chapters;
     setTimeout(() => {
       document.getElementById("chap-"+(chapters.length - 1)).scrollIntoView({behavior:"smooth",block:"start"})
     }, 100)
 
-    const englishOneliner = `${continuingStory} \nOne line summary: `;
+    const englishOneliner = `${continuingStory} \nOne line english summary: `;
+    console.log('englishOneliner', englishOneliner);
     const englishSummary = await openai_prompt({
       prompt:englishOneliner,
       fake:FAKE_IT,
@@ -163,12 +172,14 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
       alert(err)
     });
 
-    const imagePromptText = `${englishSummary} Children's Book Illustration, taylor barron, basia tran`.replace(childName, ' a child');
+    const imagePromptText = `a cute adorable kids book watercolor illustration of ${englishSummary}. Quentin blake, Lulu Chen, Maurice sendak, Highly Detailed, Le petit prince, The little prince`.replace(childName, ' a child');
+
+    console.log('imagePromptText', imagePromptText);
 
     diffusion_prompt({
       prompt: imagePromptText,
       fake: FAKE_IT,
-      stableDiffusionKey
+      openAiKey
     }).then((url) => {
       /* output */
       // render_resultImage = url;
@@ -199,13 +210,13 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   </div>
  </div>
     <p>Hvad skal historien handle om?</p>
-    <textarea name="story-description" class="textarea block bg-secondary h-10 mb-10 w-full placeholder:text-blue-800" bind:value={storyDescription} id="" placeholder="fx. Historien skal handle om en drage med hat på"></textarea>
+    <textarea name="story-description" class="textarea block bg-secondary h-20 mb-10 w-full placeholder:text-blue-800" bind:value={storyDescription} id="" placeholder="fx. Historien skal handle om en drage med hat på"></textarea>
 
     <p>OpenAI kodeord api nøgle. <a class="underline" href="https://github.com/benna100/children-story-generator#f%C3%B8r-du-starter">Guide her</a></p>
     <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={openAiKey}  type="password" placeholder="" name="openai-key" />
 
-    <p>Stable Diffusion api nøgle. <a class="underline" href="https://github.com/benna100/children-story-generator#f%C3%B8r-du-starter">Guide her</a></p>
-    <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={stableDiffusionKey}  type="password" placeholder="" name="stable-diffusion-key" />
+    <!-- <p>Stable Diffusion api nøgle. <a class="underline" href="https://github.com/benna100/children-story-generator#f%C3%B8r-du-starter">Guide her</a></p>
+    <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={stableDiffusionKey}  type="password" placeholder="" name="stable-diffusion-key" /> -->
     <!--
     <p>Vi lover ikke at stjæle dine api nøgler 🤞 <br> Du kan selv tjekke koderne <a class="underline" href="https://github.com/benna100/children-story-generator/blob/a13ec322119a5c625af1758658f9ace612c1d134/assets/index.7e304e36.js#L1">her</a> (men de er lidt svære)</p><br>
 -->
@@ -270,17 +281,23 @@ import {openai_prompt, diffusion_prompt} from "./fetchers"
   </div>
   
 
-
+{#if index < 2}
 <div class="text-center p-8" id="continue-history">
   <button class="btn btn-primary w-60 self-center" on:click={continueStory}><span class="pointer-events-none">Fortsæt historien</span><div style="display:none;" class="flex"> <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
   </svg> Vent venligst... </div></button>
 </div>
-
-		<!-- <li><a target="_blank" href="https://www.youtube.com/watch?v={cat.id}">
-			{cat.name}
-		</a></li> -->
+{:else}
+<div class="flex justify-center">
+  <!-- <button class="btn btn-primary w-60 self-center mr-4" on:click={download_pdf}><span class="pointer-events-none">Download historien (PDF)</span></button> -->
+  <button class="btn btn-primary w-60 self-center" ><span class="pointer-events-none">Lav en ny historie</span></button>
+  </div>
+{/if}
 	{/each}
 </div>
+
+<footer class="flex mt-24 justify-center">
+  <p>Lavet af <a class="underline" href="https://github.com/dditlev">Ditlev</a> og <a class="underline" href="https://benna100.github.io/portfolio/">Benjamin</a></p>
+</footer>
 <!-- {/if} -->
