@@ -3,7 +3,7 @@
   // import Chapter from "./Chapter.svelte";
   import {openai_prompt, diffusion_prompt} from "./fetchers"
   import {hasLocalStorage} from './localStorage.js';
-  import {savePdf} from "./pdf.js"
+  // import {savePdf} from "./pdf.js"
 	// import { afterUpdate, tick } from 'svelte';
 
   const FAKE_IT = false
