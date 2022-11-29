@@ -74,7 +74,7 @@
     console.log(chapters)
 
     /** Create image */
-    const englishOneliner = `${storyResult} \nOne line english summary: `;
+    const englishOneliner = `${storyResult} \nShort english summary description of an image illustrating the story: `;
     const englishSummary = await openai_prompt({
       prompt:englishOneliner,
       fake:FAKE_IT,
@@ -168,7 +168,7 @@
       document.getElementById("chap-"+(chapters.length - 1)).scrollIntoView({behavior:"smooth",block:"start"})
     }, 100)
 
-    const englishOneliner = `${continuingStory} \nOne line english summary: `;
+    const englishOneliner = `${continuingStory} \nShort english summary description of an image illustrating the story: `;
     console.log('englishOneliner', englishOneliner);
     const englishSummary = await openai_prompt({
       prompt:englishOneliner,
