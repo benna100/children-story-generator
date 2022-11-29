@@ -1,5 +1,6 @@
 <script>
 // Historien skal handle om en ingeborg der lærer at flyve
+// Historien handler om ingeborg der slår verdens største prut
   // import Chapter from "./Chapter.svelte";
   import {openai_prompt, diffusion_prompt} from "./fetchers"
   import {hasLocalStorage} from './localStorage.js';
@@ -27,7 +28,7 @@
   let openAiKey = hasLocalStorage('OPENAI_KEY') ? localStorage.getItem('OPENAI_KEY') : '';
   let stableDiffusionKey = hasLocalStorage('STADIFF_KEY') ? localStorage.getItem('STADIFF_KEY') : '';
 
-  $: prompt = `Det følgende er en positiv, sjov, sød, nuttet historie til et ${childAge} årigt barn, barnet hedder ${childName}. ${storyDescription}. \n`;
+  $: prompt = `Det følgende er en fjollet, sjov, sød og nuttet historie til et ${childAge} årigt barn, barnet hedder ${childName}. ${storyDescription}.\nSide 1: \n`;
 
   $: chapters = [];
   
@@ -50,7 +51,7 @@
     }
 
     loading_story = true
-    console.log("original prompt: ", prompt)
+    console.log("original prompt:", prompt)
 
     let storyResult = await openai_prompt({prompt,fake:FAKE_IT,openAiKey}).catch((err) => {
       alert(err)
@@ -84,7 +85,7 @@
 
     console.log("Summary: ", englishSummary);
 
-    const imagePromptText = `a cute adorable kids book watercolor illustration of ${englishSummary}. Quentin blake, Lulu Chen, Maurice sendak, Highly Detailed, Le petit prince, The little prince`.replace(childName, ' a child');
+    const imagePromptText = `a cute adorable kids book watercolor illustration of ${englishSummary}. Quentin blake, Lulu Chen, Maurice sendak, Highly Detailed, Le petit prince, The little prince. Exquisite lighting, clear focus, very coherent, character design, concept, atmospheric`.replace(childName, ' a child');
 
     console.log(imagePromptText);
 
@@ -146,9 +147,14 @@
     
     console.log("previous:",chapters[chapters.length - 1])
     console.log("next prompt",[prompt, ...chapters.map((s) => s.story)].join(" "))
+    console.log("next prompt 2",[prompt, ...chapters.map((s, i) => {
+      return s.story + `\nSide ${i+2}: \n`; 
+    })].join(" "))
     // return console.log(prompt,chapters,[prompt, ...chapters.map((s) => s.story)].join(" "))
     const continuingStory = await openai_prompt({
-      prompt:[prompt, ...chapters.map((s) => s.story)].join(" ") + ' ',
+      prompt:[prompt, ...chapters.map((s, i) => {
+        return s.story + `\nSide ${i+2}: \n`; 
+      })].join(" ") + ' ',
       fake:FAKE_IT,
       openAiKey
     }).catch((err) => {
@@ -172,7 +178,7 @@
       alert(err)
     });
 
-    const imagePromptText = `a cute adorable kids book watercolor illustration of ${englishSummary}. Quentin blake, Lulu Chen, Maurice sendak, Highly Detailed, Le petit prince, The little prince`.replace(childName, ' a child');
+    const imagePromptText = `a cute adorable kids book watercolor illustration of ${englishSummary}. Quentin blake, Lulu Chen, Maurice sendak, Highly Detailed, Le petit prince, The little prince. Exquisite lighting, clear focus, very coherent, character design, concept, atmospheric`.replace(childName, ' a child');
 
     console.log('imagePromptText', imagePromptText);
 
