@@ -85,7 +85,14 @@
 
     console.log("Summary: ", englishSummary);
 
+    // const styles = {
+    //   "cute":() => `a cute adorable kids book watercolor illustration of ${englishSummary}. Quentin blake, Lulu Chen, Maurice sendak, Highly Detailed, Le petit prince, The little prince. Exquisite lighting, clear focus, very coherent, character design, concept, atmospheric`.replace(childName, ' a child'),
+
+    //   "fantasy":() => `a fun colorful adventure kids fantasy book illustration of ${englishSummary}. digital art illustration adventure, funny, nature, wow, very coherent, character are friendly, concept, atmospheric`.replace(childName, ' a child'),
+    // }
+
     const imagePromptText = `a cute adorable kids book watercolor illustration of ${englishSummary}. Quentin blake, Lulu Chen, Maurice sendak, Highly Detailed, Le petit prince, The little prince. Exquisite lighting, clear focus, very coherent, character design, concept, atmospheric`.replace(childName, ' a child');
+    // const imagePromptText = styles[Math.random() < 0.5 ? "cute" : "fantasy"]()
 
     console.log(imagePromptText);
 
@@ -107,7 +114,7 @@
   }
 
   function download_pdf() {
-    savePdf(chapters);
+    print();
   }
 
   let isVisibleIntroGenerateButton = false;
@@ -178,6 +185,7 @@
       alert(err)
     });
 
+    // const imagePromptText = styles[Math.random() < 0.5 ? "cute" : "fantasy"]()
     const imagePromptText = `a cute adorable kids book watercolor illustration of ${englishSummary}. Quentin blake, Lulu Chen, Maurice sendak, Highly Detailed, Le petit prince, The little prince. Exquisite lighting, clear focus, very coherent, character design, concept, atmospheric`.replace(childName, ' a child');
 
     console.log('imagePromptText', imagePromptText);
@@ -216,10 +224,10 @@
   </div>
  </div>
     <p>Hvad skal historien handle om?</p>
-    <textarea name="story-description" class="textarea block bg-secondary h-20 mb-10 w-full placeholder:text-blue-800" bind:value={storyDescription} id="" placeholder="fx. Historien skal handle om en drage med hat på"></textarea>
+    <textarea name="story-description" class="textarea block bg-secondary h-20 mb-10 w-full placeholder:text-blue-800" bind:value={storyDescription} id="" placeholder="fx. Historien skal handle om Ingeborg der ser en regnbue"></textarea>
 
-    <p>OpenAI kodeord api nøgle. <a class="underline" href="https://github.com/benna100/children-story-generator#f%C3%B8r-du-starter">Guide her</a></p>
-    <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={openAiKey}  type="password" placeholder="" name="openai-key" />
+    <p>OpenAI api-nøgle <a class="underline" target="_blank" href="https://github.com/benna100/children-story-generator/blob/main/open-ai-signup.md#s%C3%A5dan-opretter-du-din-openai-api-n%C3%B8gle">guide her</a></p>
+    <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={openAiKey}  type="password" placeholder="Skriv din OpenAI api-nøgle her" name="openai-key" />
 
     <!-- <p>Stable Diffusion api nøgle. <a class="underline" href="https://github.com/benna100/children-story-generator#f%C3%B8r-du-starter">Guide her</a></p>
     <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={stableDiffusionKey}  type="password" placeholder="" name="stable-diffusion-key" /> -->
@@ -295,9 +303,9 @@
   </svg> Vent venligst... </div></button>
 </div>
 {:else}
-<div class="flex justify-center">
-  <!-- <button class="btn btn-primary w-60 self-center mr-4" on:click={download_pdf}><span class="pointer-events-none">Download historien (PDF)</span></button> -->
-  <button class="btn btn-primary w-60 self-center mt-12" ><span class="pointer-events-none">Lav en ny historie</span></button>
+<div class="flex justify-center mt-12">
+  <button class="btn btn-primary w-60 self-center mr-4" on:click={print}><span class="pointer-events-none">Print story</span></button>
+  <button class="btn btn-primary w-60 self-center" on:click={window.location.reload}><span class="pointer-events-none">Lav en ny historie</span></button>
   </div>
 {/if}
 	{/each}
