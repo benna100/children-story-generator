@@ -56,18 +56,43 @@ export async function diffusion_prompt({
       );
     }
 
+    const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+      const byteCharacters = atob(b64Data);
+      const byteArrays = [];
+    
+      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+    
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+    
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+      }
+    
+      const blob = new Blob(byteArrays, {type: contentType});
+      return blob;
+    }
+    
+
     fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
         "content-type": "application/json",
         Authorization: "Bearer " + openAiKey,
       },
-      body: JSON.stringify({ prompt, n: 1, size: "512x512" }),
+      body: JSON.stringify({ prompt, n: 1, size: "512x512",response_format:"b64_json" }),
     })
       .then((r) => r.json())
       .then((r) => {
+        console.log("GOT IMAGE",r)
+        const blob = b64toBlob(r.data[0].b64_json, "image/png");
+        const blobUrl = URL.createObjectURL(blob);
         //response_format:"b64_json"
-        rese(r.data[0].url);
+        rese(blobUrl);
+        // rese(r.data[0].url);
       })
       .catch((err) => {
         reje(err);
