@@ -4,7 +4,7 @@
   // import Chapter from "./Chapter.svelte";
   import {openai_prompt, diffusion_prompt} from "./fetchers"
   import {hasLocalStorage} from './localStorage.js';
-  // import {savePdf} from "./pdf.js"
+  import {savePdf} from "./pdf.js"
 	// import { afterUpdate, tick } from 'svelte';
 
   const FAKE_IT = false
@@ -28,6 +28,7 @@
   let openAiKey = hasLocalStorage('OPENAI_KEY') ? localStorage.getItem('OPENAI_KEY') : '';
   let stableDiffusionKey = hasLocalStorage('STADIFF_KEY') ? localStorage.getItem('STADIFF_KEY') : '';
 
+  //$: prompt = `Det følgende er en fjollet, sjov, sød og nuttet historie til et ${childAge} årigt barn, barnet hedder ${childName}. ${storyDescription}.\n`;
   $: prompt = `Det følgende er en fjollet, sjov, sød og nuttet historie til et ${childAge} årigt barn, barnet hedder ${childName}. ${storyDescription}.\nSide 1: \n`;
 
   $: chapters = [];
@@ -152,15 +153,17 @@
     e.target.children[0].style.display = "none"
     e.target.children[1].style.display = "";
     
+    /*
     console.log("previous:",chapters[chapters.length - 1])
     console.log("next prompt",[prompt, ...chapters.map((s) => s.story)].join(" "))
     console.log("next prompt 2",[prompt, ...chapters.map((s, i) => {
       return s.story + `\nSide ${i+2}: \n`; 
     })].join(" "))
+    */
     // return console.log(prompt,chapters,[prompt, ...chapters.map((s) => s.story)].join(" "))
     const continuingStory = await openai_prompt({
       prompt:[prompt, ...chapters.map((s, i) => {
-        return s.story + `\nSide ${i+2}: \n`; 
+        return s.story + `\nSide ${i+2}: \n`;
       })].join(" ") + ' ',
       fake:FAKE_IT,
       openAiKey
@@ -208,26 +211,26 @@
   }
 </script>
 
-<h1 class="text-4xl pt-10 pb-10 text-center p-2">Generer din egen børnebog 📖</h1>
+<h1 class="text-6xl pt-10 pb-10 text-center p-2 pt-12 font-pri">📖 Generer din egen børnebog 📖</h1>
 
-<div class="p-6 text-2xl w-full flex flex-col justify-items-center" id="story-generator" style="margin: 0 auto; max-width: 800px;">
+<div class="p-10 text-2xl w-full flex flex-col justify-items-center bg-base-100" id="story-generator" style="border-radius: 30px;margin: 0 auto; max-width: 800px;">
  <div class="flex">
   <div class="flex w-full">
     <div class="grow mr-3"> 
-      <p class="">Barnets navn</p>
-      <input bind:value={childName} class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800 placeholder-black::placeholder  placeholder:text-blue-800" type="text" name="child-name" placeholder="fx. Valdemar" /> 
+      <p class="text-base mb-2">Barnets navn</p>
+      <input bind:value={childName} class="input bg-white font-bold mb-6 w-full placeholder:text-black-800 placeholder-black::placeholder  placeholder:text-black-800" type="text" name="child-name" placeholder="fx. Valdemar" /> 
     </div>
     <div class="grow">
-      <p>Barnets alder</p>
-      <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={childAge} name="age" type="text" placeholder="fx. 5" />
+      <p class="text-base mb-2">Barnets alder</p>
+      <input class="input bg-white mb-6 font-bold w-full placeholder:text-black-800" bind:value={childAge} name="age" type="text" placeholder="fx. 5" />
     </div>
   </div>
  </div>
-    <p>Hvad skal historien handle om?</p>
-    <textarea name="story-description" class="textarea block bg-secondary h-20 mb-10 w-full placeholder:text-blue-800" bind:value={storyDescription} id="" placeholder="fx. Historien skal handle om Ingeborg der ser en regnbue"></textarea>
+    <p class="text-base mb-2">Hvad skal historien handle om?</p>
+    <textarea name="story-description" class="textarea font-bold bg-white block  h-20 mb-5 w-full placeholder:text-black-800" bind:value={storyDescription} id="" placeholder="fx. Historien skal handle om Ingeborg der ser en regnbue"></textarea>
 
-    <p>OpenAI api-nøgle <a class="underline" target="_blank" href="https://github.com/benna100/children-story-generator/blob/main/open-ai-signup.md#s%C3%A5dan-opretter-du-din-openai-api-n%C3%B8gle">guide her</a></p>
-    <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={openAiKey}  type="password" placeholder="Skriv din OpenAI api-nøgle her" name="openai-key" />
+    <p class="text-base mb-2">OpenAI api-nøgle <a class="underline" target="_blank" href="https://github.com/benna100/children-story-generator/blob/main/open-ai-signup.md#s%C3%A5dan-opretter-du-din-openai-api-n%C3%B8gle">guide her</a></p>
+    <input class="input bg-white  w-full placeholder:text-black-800" bind:value={openAiKey}  type="password" placeholder="Skriv din OpenAI api-nøgle her" name="openai-key" />
 
     <!-- <p>Stable Diffusion api nøgle. <a class="underline" href="https://github.com/benna100/children-story-generator#f%C3%B8r-du-starter">Guide her</a></p>
     <input class="input text-secondary-content mb-6 bg-secondary w-full placeholder:text-blue-800" bind:value={stableDiffusionKey}  type="password" placeholder="" name="stable-diffusion-key" /> -->
@@ -297,21 +300,23 @@
 
 {#if index < 2}
 <div class="text-center p-8" id="continue-history">
+  <button class="btn btn-primary w-60 self-center mr-4" on:click={savePdf(chapters)}><span class="pointer-events-none">Gem i pdf</span></button>
   <button class="btn btn-primary w-60 self-center" on:click={continueStory}><span class="pointer-events-none">Fortsæt historien</span><div style="display:none;" class="flex"> <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
   </svg> Vent venligst... </div></button>
+  
 </div>
 {:else}
 <div class="flex justify-center mt-12">
-  <button class="btn btn-primary w-60 self-center mr-4" on:click={print}><span class="pointer-events-none">Print story</span></button>
+  <button class="btn btn-primary w-60 self-center mr-4" on:click={savePdf(chapters)}><span class="pointer-events-none">Print story</span></button>
   <button class="btn btn-primary w-60 self-center" on:click={window.location.reload}><span class="pointer-events-none">Lav en ny historie</span></button>
   </div>
 {/if}
 	{/each}
 </div>
 
-<footer class="flex mt-24 justify-center">
+<footer class="flex mt-10 justify-center opacity-80">
   <p>Lavet af <a class="underline" href="https://github.com/dditlev">Ditlev</a> og <a class="underline" href="https://benna100.github.io/portfolio/">Benjamin</a></p>
 </footer>
 <!-- {/if} -->

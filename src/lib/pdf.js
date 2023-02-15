@@ -46,13 +46,12 @@ export async function savePdf(chapters) {
     bold: true,
   });
 
-  // textAndImages.push({
-  //   text: "Lavet af ",
-  //   fontSize: 12,
-  //   alignment: "center",
-  //   margin: [10, 30, 10, 30],
-  //   bold: true,
-  // });
+  textAndImages.push({
+    text: "Lavet af ",
+    fontSize: 12,
+    alignment: "center",
+    bold: true,
+  });
 
   // textAndImages.push({ text: 'google', link: 'http://google.com'});
 

@@ -116,9 +116,9 @@ document.getElementById("generated-story").scrollIntoView({behavior:"smooth"})
 </script>
 <div>
     <div class="hero p-6 bg-base-200 flex flex-col justify-center items-center" style="height:50vh;" id="intro-hero">
-        <div class=" flex flex-col justify-center items-center" style="max-width: 500px;">
-            <h1 class="text-5xl font-bold text-center" style="line-height: 4rem;">Generer din helt egen børnebog</h1>
-            <p class="py-6">Med et navn, en alder og en lille historie, kan du skabe dine helt egne børnehistorier, lige klar til oplæsning</p>
+        <div class=" flex flex-col justify-center items-center text-center" style="max-width: 500px;">
+            <h1 class="text-7xl font-bold text-center font-pri" style="line-height: 4rem;">Generer din helt egen børnebog</h1>
+            <p class="py-6 mt-3">Med et navn, en alder og en lille historie, kan du skabe dine helt egne børnehistorier, lige klar til oplæsning</p>
             <button on:click={show_the_story_gen} class="btn btn-primary" style="max-width: 300px;">Vis mig et eksempel</button>
           </div> 
       </div>
