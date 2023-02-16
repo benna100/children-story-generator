@@ -7,7 +7,7 @@
   import {savePdf} from "./pdf.js"
 	// import { afterUpdate, tick } from 'svelte';
 
-  const FAKE_IT = false
+  const FAKE_IT = true
   const FAKE_LOADED_STORY = false
 
   // let prompt = ""
@@ -211,9 +211,9 @@
   }
 </script>
 
-<h1 class="text-6xl pt-10 pb-10 text-center p-2 pt-12 font-pri">📖 Generer din egen børnebog 📖</h1>
+<h1 class="text-3xl md:text-6xl pt-10 pb-10 text-center p-2 pt-12 font-pri"><span class="hidden md:inline-block">📖</span> Generer din egen børnebog <span class="hidden md:inline-block">📖</span></h1>
 
-<div class="p-10 text-2xl w-full flex flex-col justify-items-center bg-base-100" id="story-generator" style="border-radius: 30px;margin: 0 auto; max-width: 800px;">
+<div class="p-4 md:p-10 text-2xl w-full flex flex-col justify-items-center bg-base-100" id="story-generator" style="border-radius: 30px;margin: 0 auto; max-width: 800px;">
  <div class="flex">
   <div class="flex w-full">
     <div class="grow mr-3"> 
@@ -298,9 +298,9 @@
   </div>
   
 
-{#if index < 2}
-<div class="text-center p-8" id="continue-history">
-  <button class="btn btn-primary w-60 self-center mr-4" on:click={savePdf(chapters)}><span class="pointer-events-none">Gem i pdf</span></button>
+{#if index < 10}
+<div class="text-center p-2 md:p-8" id="continue-history">
+  <button class="btn btn-outline w-60 self-center mb-2 md:md-0 md:mr-4" on:click={savePdf(chapters)}><span class="pointer-events-none">Gem historie som pdf</span></button>
   <button class="btn btn-primary w-60 self-center" on:click={continueStory}><span class="pointer-events-none">Fortsæt historien</span><div style="display:none;" class="flex"> <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
