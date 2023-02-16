@@ -1,35 +1,40 @@
 import pdfMake from "pdfmake/build/pdfmake";
 // import pdfFonts from "pdfmake/build/vfs_fonts";
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-
 const getBase64FromUrl = async (url) => {
-    const data = await fetch(url);
-    const blob = await data.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob); 
-      reader.onloadend = () => {
-        const base64data = reader.result;   
-        resolve(base64data);
-      }
-    });
-  }
-
-  
+  const data = await fetch(url);
+  const blob = await data.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      resolve(base64data);
+    };
+  });
+};
 
 export async function savePdf(chapters) {
- 
   console.log(chapters);
   let textAndImages = [
-    { text: "En lille historie", fontSize: 28, margin: [10, 10, 10, 30], bold: true },
+    {
+      text: "En lille historie",
+      fontSize: 28,
+      margin: [10, 10, 10, 30],
+      bold: true,
+    },
   ];
 
   for (let index = 0; index < chapters.length; index++) {
     const chapter = chapters[index];
     const b64 = await getBase64FromUrl(chapter.image);
-    textAndImages.push({ text: chapter.story, fontSize: 20, margin: [10, 10, 10, 30] });
+    textAndImages.push({
+      text: chapter.story,
+      fontSize: 20,
+      margin: [10, 10, 10, 30],
+    });
     textAndImages.push({
       image: b64,
       width: 400,
@@ -37,8 +42,6 @@ export async function savePdf(chapters) {
       margin: [10, 10, 10, 30],
     });
   }
-
-
 
   textAndImages.push({
     text: "Lavet af Ditlev og Benjamin\n" + window.location.href,
@@ -57,16 +60,12 @@ export async function savePdf(chapters) {
 
   // textAndImages.push({ text: 'google', link: 'http://google.com'});
 
-
-
-  
-
- 
-
   const docDefinition = {
     header: { text: "Din egen børnebog" },
-    content: textAndImages };
-  pdfMake.createPdf(docDefinition).open();
+    content: textAndImages,
+  };
+  const doc = pdfMake.createPdf(docDefinition);
+  doc.getBase64((data) => {
+    window.location.href = "data:application/pdf;base64," + data;
+  });
 }
-
-

@@ -1,4 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap");
+
+html {
+  background-color: white !important;
+}
 
 body {
   /*
@@ -6,6 +10,7 @@ body {
   
   */
   font-family: "Comfortaa", cursive;
+  padding: 6px;
 }
 main {
   /* background-color: transparent!important; */
@@ -24,7 +29,7 @@ main::before {
   height: 100vh;
 }
 .font-pri {
-  font-family: 'Patrick Hand', cursive;
+  font-family: "Patrick Hand", cursive;
 }
 /* :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
@@ -118,38 +123,34 @@ button:focus-visible {
   #main,
   html,
   body {
-    background: none!important;
+    background: none !important;
   }
   #generated-story > *:first-child {
     display: none;
   }
   #generated-story > * {
-    max-width: 100%!important;
+    max-width: 100% !important;
     /* background: transparent!important; */
   }
   #generated-story * {
-    font-size: 1rem!important;
-    line-height: 1.25rem!important;
+    font-size: 1rem !important;
+    line-height: 1.25rem !important;
   }
   #generated-story img {
-    max-width: 50%!important;
+    max-width: 50% !important;
     margin: 10%;
     /* page-break-inside: avoid; */
     /* overflow: hidden; */
     /* float:right; */
   }
-  
-  img {
-   
 
+  img {
     break-before: auto !important; /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
     break-after: auto !important; /* 'always,' 'avoid,' 'left,' 'inherit,' or 'right' */
     break-inside: avoid !important; /* or 'auto' */
   }
 
   footer {
-    display: none!important;
+    display: none !important;
   }
-
-
 }

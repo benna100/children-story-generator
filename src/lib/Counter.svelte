@@ -7,8 +7,8 @@
   import {savePdf} from "./pdf.js"
 	// import { afterUpdate, tick } from 'svelte';
 
-  const FAKE_IT = false
-  const FAKE_LOADED_STORY = false
+  const FAKE_IT = false;
+  const FAKE_LOADED_STORY = false;
 
   // let prompt = ""
   // const update_prompt = (e) => {
